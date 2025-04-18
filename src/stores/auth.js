@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
+import router from '@/router'
 import { auth, db } from '@/plugins/firebase'
 import { doc, setDoc } from 'firebase/firestore'
-import router from '@/router'
 import { useCrudStore } from './crud/crud'
 import { useUtilStore } from './utils/utils'
 

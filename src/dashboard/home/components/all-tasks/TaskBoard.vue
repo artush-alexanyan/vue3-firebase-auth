@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div>
       <div class="flex items-center justify-center h-screen" v-if="taskFetching">
         <BaseLoader />
       </div>
@@ -11,10 +11,11 @@
               <div class="bg-gray-100 dark:bg-dark-100 p-1 rounded-2xl">
                 <h3 class="text-primary-green py-2.5 text-center">{{ group.name }}</h3>
                 <draggable
+                  @change="(event) => handleTaskMove(group.key)(event)"
                   class="dragArea list-group min-h-[120px]"
                   :list="group.tasks"
                   item-key="id"
-                  group="tasks"
+                  :group="{ name: 'tasks' }"
                 >
                   <template #item="{ element }">
                     <div class="list-group-item cursor-drag">
@@ -44,7 +45,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import BaseLoader from '@/components/base/BaseLoader.vue'
 import TaskItem from './TaskItem.vue'
 import { useCrudStore } from '@/stores/crud/crud'
@@ -54,6 +55,16 @@ const crudStore = useCrudStore()
 
 const tasks = ref([])
 const taskFetching = ref(false)
+
+const handleTaskMove = (newStatus) => async (event) => {
+  if (event.added?.element) {
+    const task = event.added.element
+    task.status = newStatus
+    console.log(`Task "${task.id}" moved to status "${newStatus}"`)
+    await crudStore.updateTaskStatus('tasks', task.id, newStatus)
+    console.log(`Task "${task.id}" status updated to"${newStatus}"`)
+  }
+}
 
 const fetchAllTasks = async () => {
   const statusGroups = [
@@ -67,7 +78,6 @@ const fetchAllTasks = async () => {
     taskFetching.value = true
     const taskData = await crudStore.getCollectionItems('tasks')
 
-    // Group tasks into the appropriate status array
     taskData.forEach((task) => {
       const group = statusGroups.find((s) => s.key === task.status)
       if (group) {

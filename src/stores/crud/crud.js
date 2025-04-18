@@ -8,10 +8,10 @@ export const useCrudStore = defineStore('CrudStore', {
     data: [],
   }),
   actions: {
-    async addNewDocument(docData, connectionName, documentId) {
+    async addNewDocument(docData, collectionName, documentId) {
       try {
         this.loading = true
-        await setDoc(doc(db, connectionName, documentId), docData)
+        await setDoc(doc(db, collectionName, documentId), docData)
       } catch (err) {
         console.error('Error adding document:', err)
       } finally {
@@ -19,10 +19,10 @@ export const useCrudStore = defineStore('CrudStore', {
       }
     },
 
-    async deleteDocument(connectionName, documentId) {
+    async deleteDocument(collectionName, documentId) {
       try {
         this.loading = true
-        await deleteDoc(doc(db, connectionName, documentId))
+        await deleteDoc(doc(db, collectionName, documentId))
       } catch (err) {
         console.error('Error deleting document:', err)
       } finally {
@@ -30,10 +30,10 @@ export const useCrudStore = defineStore('CrudStore', {
       }
     },
 
-    async getCollectionItems(connectionName) {
+    async getCollectionItems(collectionName) {
       try {
         this.loading = true
-        const querySnapshot = await getDocs(collection(db, connectionName))
+        const querySnapshot = await getDocs(collection(db, collectionName))
         const data = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -46,21 +46,24 @@ export const useCrudStore = defineStore('CrudStore', {
       }
     },
 
-    async updateDocument(connectionName, documentId, updatedData) {
+    async updateDocument(collectionName, documentId, updatedData) {
       try {
         this.loading = true
-        await updateDoc(doc(db, connectionName, documentId), updatedData)
+        await updateDoc(doc(db, collectionName, documentId), updatedData)
       } catch (err) {
         console.error('Error updating document:', err)
       } finally {
         this.loading = false
       }
     },
-    async getDocumentById(connectionName, documentId) {
+    async updateTaskStatus(collectionName, taskId, newStatus) {
+      return this.updateDocument(collectionName, taskId, { status: newStatus })
+    },
+    async getDocumentById(collectionName, documentId) {
       try {
         let singleDoc = null
         this.loading = true
-        const docRef = doc(db, connectionName, documentId)
+        const docRef = doc(db, collectionName, documentId)
         const docSnap = await getDoc(docRef)
 
         if (docSnap.exists()) {

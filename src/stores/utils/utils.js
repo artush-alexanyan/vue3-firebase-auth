@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 
 export const useUtilStore = defineStore('UtilStore', {
   actions: {
-    // RoboHash
     generateRandomAvatarUrl() {
       const id = Math.random().toString(36).substring(2, 12)
       const url = `https://robohash.org/${encodeURIComponent(id)}.png`
