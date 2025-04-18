@@ -2,7 +2,7 @@
   <AuthContainer>
     <template #auth-content>
       <BaseTitle :title="'Join us'" />
-      <form @submit.prevent="submitRegister" class="mt-10 flex flex-col space-y-3.5">
+      <form @submit.prevent="submitRegister" class="mt-5 flex flex-col space-y-3.5">
         <BaseInput
           v-model="username"
           :disabled="regiterLoading"
@@ -58,13 +58,13 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 import BaseTitle from '@/components/base/BaseTitle.vue'
 import AuthContainer from '../components/AuthContainer.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
-import BaseButton from '../components/BaseButton.vue'
-import { PhAt, PhPassword, PhUser } from '@phosphor-icons/vue'
+import BaseButton from '@/components/base/BaseButton.vue'
 import AuthRouteChange from '../components/AuthRouteChange.vue'
-import { useAuthStore } from '@/stores/auth'
+import { PhAt, PhPassword, PhUser } from '@phosphor-icons/vue'
 
 const authStore = useAuthStore()
 
@@ -74,6 +74,6 @@ const password = ref('')
 const regiterLoading = computed(() => authStore.regiterLoading)
 
 const submitRegister = async () => {
-  authStore.registerNewUser(email.value, password.value, username.value)
+  await authStore.registerNewUser(email.value, password.value, username.value)
 }
 </script>

@@ -1,0 +1,112 @@
+.dp__main * {
+  font-family: 'Raleway', sans-serif !important;
+}
+/* */
+.dp__menu {
+  border: 1px solid #e5e7eb !important;
+}
+.dp__active_date {
+  background-color: #fcd535 !important;
+  border-color: #fcd535 !important;
+}
+
+.dp__today {
+  border: 1px solid #fcd535 !important;
+}
+.dp__overlay_cell_active {
+  background-color: #fcd535 !important;
+}
+
+.dp__selection_preview {
+  font-size: 16px !important;
+  color: #2ebd85 !important;
+}
+.dp__input_wrap {
+  border-radius: 8px !important;
+}
+.dp__input {
+  padding: 14px 50px !important;
+  border-radius: 8px !important;
+}
+
+.dp__calendar_header_separator {
+  height: 0.5px !important;
+}
+
+.dp__date_hover:hover {
+  background-color: #fcd535 !important;
+  border-color: #fcd535 !important;
+}
+html.dark .dp__main * {
+  background-color: #181a20;
+}
+html.dark .dp__menu {
+  border: 1px solid #2a3138 !important;
+}
+html.dark .dp__calendar {
+  background-color: #181a20 !important;
+}
+html.dark .dp__menu_inner {
+  background-color: #181a20 !important;
+}
+html.dark .dp--tp-wrap {
+  background-color: #181a20 !important;
+}
+html.dark .dp__cell_inner {
+  color: #eaecef !important;
+}
+html.dark .dp__calendar_header_item {
+  color: #eaecef !important;
+}
+html.dark .dp__input_wrap {
+  background-color: #2b3139 !important;
+}
+html.dark .dp__input {
+  color: #eaecef !important;
+  border: 1.5px solid #2a3138 !important;
+  background-color: #2b3139 !important;
+}
+html.dark .dp__input_icons {
+  background-color: transparent !important;
+}
+html.dark .dp--clear-btn {
+  background-color: #2b3139 !important;
+}
+html.dark .dp__arrow_bottom {
+  border-inline-end: 1px solid #2a3138 !important;
+  border-bottom: 1px solid #2a3138 !important;
+  background-color: #181a20 !important;
+}
+html.dark .dp__btn {
+  color: #eaecef !important;
+}
+html.dark .dp__btn:hover {
+  background-color: transparent !important;
+}
+html.dark .dp--arrow-btn-nav {
+  background-color: transparent !important;
+}
+html.dark .dp--arrow-btn-nav:hover {
+  background-color: transparent !important;
+}
+html.dark .dp__inner_nav {
+  background-color: #181a20 !important;
+}
+html.dark .dp__overlay_cell {
+  color: #eaecef !important;
+}
+html.dark .dp__overlay_cell:hover {
+  background-color: #fcd535 !important;
+}
+html.dark .dp__time_display {
+  color: #eaecef !important;
+}
+html.dark .dp__time_display:hover {
+  background-color: #fcd535 !important;
+}
+html.dark .dp__calendar_header_separator {
+  background-color: #2b3139 !important;
+}
+html.dark .dp__button dp__overlay_action {
+  background-color: #181a20 !important;
+}

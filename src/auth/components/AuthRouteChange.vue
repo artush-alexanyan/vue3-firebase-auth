@@ -4,7 +4,7 @@
       {{ question }}
       <RouterLink
         :to="routePath"
-        class="text-primary hover:text-underline transition-all duration-300"
+        class="text-secondary-green hover:underline transition-all duration-300"
       >
         {{ actionName }}
       </RouterLink>

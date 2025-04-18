@@ -1,10 +1,9 @@
 <template>
   <div class="flex flex-col space-y-1.5">
-    <label :for="id" class="text-gray-600 dark:text-primary-dark-text text-sm">{{ label }}</label>
+    <label :for="id" class="text-black dark:text-gray-primary text-sm">{{ label }}</label>
     <div class="relative">
       <input
-        class="border-[1.5px] w-full px-10 py-2.5 bg-white dark:bg-dark-light rounded-lg outline-none focus:border-primary placeholder:text-sm"
-        :class="getInputClasses"
+        :class="[getInputClasses, globalClasses, defaultClasses]"
         :placeholder="placeholder"
         :type="type"
         :required="required"
@@ -18,7 +17,7 @@
       />
       <div
         class="absolute top-1/2 left-2.5 transform -translate-y-1/2"
-        :class="isFocused ? 'text-primary' : 'text-black dark:text-primary-dark-text'"
+        :class="isFocused ? 'text-primary' : 'text-gray-500 dark:text-primary-dark-text'"
       >
         <slot name="left-icon"></slot>
       </div>
@@ -63,11 +62,19 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  globalClasses: {
+    type: String,
+    default: 'px-10 py-3.5',
+  },
 })
 
 const isFocused = ref(false)
 
 const getInputClasses = computed(() =>
-  props.isError ? 'border-red-600' : 'border-gray-300 dark:border-darker',
+  props.isError ? 'border-red-600' : 'border-gray-200 dark:border-gray',
+)
+const defaultClasses = computed(
+  () =>
+    'border-[1.5px] w-full bg-white dark:bg-dark-100 dark:text-gray-primary !dark:autofill:bg-dark-100 rounded-lg outline-none focus:border-primary placeholder:text-sm',
 )
 </script>

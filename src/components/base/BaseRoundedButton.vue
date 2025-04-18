@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[shapes, isActive ? 'text-primary' : 'text-primary-dark-text']"
-    class="cursor-pointer rounded-full flex items-center justify-center bg-white dark:bg-dark-light"
+    class="cursor-pointer rounded-full flex items-center justify-center bg-primary-green/12.5 text-primary-green dark:bg-dark-light"
     type="button"
     @click="emit('button-action')"
   >

@@ -2,7 +2,7 @@
   <AuthContainer>
     <template #auth-content>
       <BaseTitle :title="'Login'" />
-      <form @submit.prevent="submitLogin" class="mt-10 flex flex-col space-y-3.5">
+      <form @submit.prevent="submitLogin" class="mt-5 flex flex-col space-y-3.5">
         <BaseInput
           v-model="email"
           :disabled="loginLoading"
@@ -49,7 +49,7 @@ import { ref, computed } from 'vue'
 import BaseTitle from '@/components/base/BaseTitle.vue'
 import AuthContainer from '../components/AuthContainer.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
-import BaseButton from '../components/BaseButton.vue'
+import BaseButton from '@/components/base/BaseButton.vue'
 import { PhAt, PhPassword } from '@phosphor-icons/vue'
 import AuthRouteChange from '../components/AuthRouteChange.vue'
 import { useAuthStore } from '@/stores/auth'

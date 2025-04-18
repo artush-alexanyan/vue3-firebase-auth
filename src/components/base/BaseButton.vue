@@ -4,8 +4,9 @@
     :loading="loading"
     :name="name"
     :class="disabled ? 'cursor-not-allowed' : 'cursor-pointer'"
-    class="flex items-center justify-center px-5 py-2.5 w-full space-x-2 bg-primary text-white hover:bg-amber-400 transition-all duration-300 rounded-lg"
+    class="flex w-full items-center justify-center px-5 py-3.5 space-x-2 bg-primary text-black hover:bg-amber-400 transition-all duration-300 rounded-lg"
     :type="type"
+    @click="emit('button-action')"
   >
     <span>{{ label }}</span>
     <PhCircleNotch v-if="loading" size="20" class="animate-spin" />
