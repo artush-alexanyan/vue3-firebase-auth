@@ -34,7 +34,6 @@ export const useTaskStore = defineStore('TaskStore', {
     },
     async fetchAllTasks() {
       const crudStore = useCrudStore()
-
       try {
         this.taskFetching = true
         const taskData = await crudStore.getCollectionItems('tasks')

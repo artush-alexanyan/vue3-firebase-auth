@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full">
+  <div class="flex w-full overflow-hidden">
     <SidebarLeft />
     <main class="w-full bg-gray-50 dark:bg-dark-200">
       <RouterView />

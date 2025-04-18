@@ -1,18 +1,41 @@
 <template>
-  <div class="">
+  <div>
     <div class="container">
-      <div class="" v-if="taskFetching">
+      <div class="flex items-center justify-center h-screen" v-if="taskFetching">
         <BaseLoader />
       </div>
-      <div class="" v-else>
-        <div class="" v-if="tasks.length > 0">
-          <ul>
-            <li v-for="task in tasks" :key="task.id">
-              {{ task.title }}
-            </li>
-          </ul>
+      <div v-else>
+        <div v-if="tasks.length > 0">
+          <div class="mt-5 md:grid xl:grid-cols-4 md:grid-cols-2 hidden gap-5">
+            <div v-for="group in tasks" :key="group.id" class="task-column min-w-full">
+              <div class="bg-gray-100 dark:bg-dark-100 p-1 rounded-2xl">
+                <h3 class="text-primary-green py-2.5 text-center">{{ group.name }}</h3>
+                <draggable
+                  class="dragArea list-group min-h-[120px]"
+                  :list="group.tasks"
+                  item-key="id"
+                  group="tasks"
+                >
+                  <template #item="{ element }">
+                    <div class="list-group-item cursor-drag">
+                      <TaskItem class="mb-1" :task="element" />
+                    </div>
+                  </template>
+
+                  <template #footer>
+                    <div
+                      v-if="!group.tasks.length"
+                      class="text-gray-500 italic text-sm text-center py-3"
+                    >
+                      No tasks here
+                    </div>
+                  </template>
+                </draggable>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="" v-else>
+        <div v-else>
           <p class="text-center">No task found</p>
         </div>
       </div>
@@ -21,16 +44,46 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useTaskStore } from '@/stores/tasks/tasks'
+import { computed, ref, onMounted } from 'vue'
 import BaseLoader from '@/components/base/BaseLoader.vue'
+import TaskItem from './TaskItem.vue'
+import { useCrudStore } from '@/stores/crud/crud'
+import Draggable from 'vuedraggable'
 
-const taskStore = useTaskStore()
+const crudStore = useCrudStore()
 
-const tasks = computed(() => taskStore.tasks)
-const taskFetching = computed(() => taskStore.taskFetching)
+const tasks = ref([])
+const taskFetching = ref(false)
+
+const fetchAllTasks = async () => {
+  const statusGroups = [
+    { id: 1, name: 'Open', key: 'open', tasks: [] },
+    { id: 2, name: 'In Progress', key: 'in_progress', tasks: [] },
+    { id: 3, name: 'Review', key: 'review', tasks: [] },
+    { id: 4, name: 'Completed', key: 'completed', tasks: [] },
+  ]
+
+  try {
+    taskFetching.value = true
+    const taskData = await crudStore.getCollectionItems('tasks')
+
+    // Group tasks into the appropriate status array
+    taskData.forEach((task) => {
+      const group = statusGroups.find((s) => s.key === task.status)
+      if (group) {
+        group.tasks.push(task)
+      }
+    })
+
+    tasks.value = statusGroups
+  } catch (error) {
+    console.error('error fetching tasks', error)
+  } finally {
+    taskFetching.value = false
+  }
+}
 
 onMounted(async () => {
-  await taskStore.fetchAllTasks()
+  await fetchAllTasks()
 })
 </script>
