@@ -16,5 +16,38 @@ export const useUtilStore = defineStore('UtilStore', {
       }
       return autoId
     },
+    formatFirebaseMessage(firebaseMessage, messageType) {
+      console.log('firebaseMessage', firebaseMessage)
+
+      // If firebaseMessage is falsy (null, undefined, empty), return a generic message
+      if (!firebaseMessage) {
+        return {
+          message:
+            messageType === 'Error'
+              ? 'Something went wrong. Please try again later.'
+              : 'Action successfull!',
+          type: messageType,
+        }
+      }
+
+      let formattedMessage = firebaseMessage
+
+      // Remove the Firebase prefix if present (e.g., "Firebase: Error message (auth/code)")
+      const firebaseTextIndex = formattedMessage.indexOf('Firebase:')
+      if (firebaseTextIndex !== -1) {
+        formattedMessage = formattedMessage.slice(firebaseTextIndex + 'Firebase:'.length).trim()
+      }
+
+      // Remove the error code in parentheses if present (e.g., "(auth/code)")
+      const errorCodeStartIndex = formattedMessage.indexOf('(')
+      if (errorCodeStartIndex !== -1) {
+        formattedMessage = formattedMessage.slice(0, errorCodeStartIndex).trim()
+      }
+
+      return {
+        message: formattedMessage,
+        type: messageType,
+      }
+    },
   },
 })

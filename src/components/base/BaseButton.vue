@@ -3,8 +3,8 @@
     :disabled="disabled"
     :loading="loading"
     :name="name"
-    :class="disabled ? 'cursor-not-allowed' : 'cursor-pointer'"
-    class="flex w-full items-center justify-center px-5 py-3.5 space-x-2 bg-primary text-black hover:bg-amber-400 transition-all duration-300 rounded-lg"
+    :class="[btnClass, disabled ? 'cursor-not-allowed' : 'cursor-pointer']"
+    class="flex w-full items-center justify-center px-5 py-3.5 space-x-2 transition-all duration-300 rounded-lg"
     :type="type"
     @click="emit('button-action')"
   >
@@ -35,6 +35,10 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false,
+  },
+  btnClass: {
+    type: String,
+    default: 'bg-primary text-black hover:bg-amber-400',
   },
 })
 </script>

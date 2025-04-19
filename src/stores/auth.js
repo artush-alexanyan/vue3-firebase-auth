@@ -19,12 +19,14 @@ export const useAuthStore = defineStore('AutStore', {
     navigatedashboard() {
       router.push({ path: '/dashboard' })
     },
+    handleMessage() {},
     async addNewDocument(docData, documentId) {
       try {
         this.saving = true
         await setDoc(doc(db, 'users', documentId), docData)
       } catch (err) {
-        console.error('Error saving user document:', err)
+        const utilStore = useUtilStore()
+        this.authMessage = utilStore.formatFirebaseMessage(error.message, 'Error')
       } finally {
         this.saving = false
         this.navigatedashboard()
@@ -47,7 +49,8 @@ export const useAuthStore = defineStore('AutStore', {
         }
         await this.addNewDocument(userData, user.uid)
       } catch (error) {
-        this.authMessage = error.message
+        const utilStore = useUtilStore()
+        this.authMessage = utilStore.formatFirebaseMessage(error.message, 'Error')
       } finally {
         this.regiterLoading = false
       }
@@ -60,8 +63,8 @@ export const useAuthStore = defineStore('AutStore', {
         this.navigatedashboard()
         return user
       } catch (error) {
-        const errorCode = error.code
-        this.authMessage = error.message
+        const utilStore = useUtilStore()
+        this.authMessage = utilStore.formatFirebaseMessage(error.message, 'Error')
       } finally {
         this.loginLoading = false
       }
@@ -76,7 +79,10 @@ export const useAuthStore = defineStore('AutStore', {
         }, 1500)
       } catch (error) {
         this.signingOut = false
-        alert(error.message)
+        const utilStore = useUtilStore()
+        this.authMessage = utilStore.formatFirebaseMessage(error.message, 'Error')
+      } finally {
+        this.signingOut = false
       }
     },
     async checkUserState() {
@@ -89,7 +95,8 @@ export const useAuthStore = defineStore('AutStore', {
             const userData = await crudStore.getDocumentById('users', userId)
             this.user = userData
           } catch (error) {
-            console.error('error fetching userdata', error.message)
+            const utilStore = useUtilStore()
+            this.authMessage = utilStore.formatFirebaseMessage(error.message, 'Error')
           } finally {
             this.userLoading = false
           }
@@ -98,6 +105,9 @@ export const useAuthStore = defineStore('AutStore', {
           this.userLoading = false
         }
       })
+    },
+    clearAuthMessage() {
+      this.authMessage = null
     },
   },
 })

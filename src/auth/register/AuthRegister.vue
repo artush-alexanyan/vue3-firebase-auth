@@ -1,6 +1,7 @@
 <template>
   <AuthContainer>
     <template #auth-content>
+      <BaseMessage :message="authMessage" @delete-message="clearAuthMessage" />
       <BaseTitle :title="'Join us'" />
       <form @submit.prevent="submitRegister" class="mt-5 flex flex-col space-y-3.5">
         <BaseInput
@@ -59,12 +60,13 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { PhAt, PhPassword, PhUser } from '@phosphor-icons/vue'
 import BaseTitle from '@/components/base/BaseTitle.vue'
 import AuthContainer from '../components/AuthContainer.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
 import AuthRouteChange from '../components/AuthRouteChange.vue'
-import { PhAt, PhPassword, PhUser } from '@phosphor-icons/vue'
+import BaseMessage from '@/components/base/BaseMessage.vue'
 
 const authStore = useAuthStore()
 
@@ -72,6 +74,11 @@ const username = ref('')
 const email = ref('')
 const password = ref('')
 const regiterLoading = computed(() => authStore.regiterLoading)
+const authMessage = computed(() => authStore.authMessage)
+
+const clearAuthMessage = () => {
+  authStore.clearAuthMessage()
+}
 
 const submitRegister = async () => {
   await authStore.registerNewUser(email.value, password.value, username.value)

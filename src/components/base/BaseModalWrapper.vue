@@ -1,10 +1,10 @@
 <template>
   <div
     v-if="showModal"
-    class="z-[70] fixed top-0 left-0 flex items-center justify-center w-full h-screen md:p-3 bg-black/75 dark:bg-white/10"
+    class="z-[70] fixed top-0 left-0 flex items-center justify-center w-full h-screen md:p-3 bg-black/10 dark:bg-white/10"
   >
     <div
-      class="zoom-in w-full dark:text-gray-primary relative md:rounded-2xl md:shadow-2xl bg-gray-50 dark:bg-dark-200 border border-gray-200 dark:border-gray text-black dark:text-primary-dark-text overflow-hidden"
+      class="zoom-in w-full dark:text-gray-primary relative md:rounded-2xl bg-gray-50 dark:bg-dark-200 border border-gray-200 dark:border-gray text-black dark:text-primary-dark-text overflow-hidden"
       :class="modalClasses"
     >
       <div class="">

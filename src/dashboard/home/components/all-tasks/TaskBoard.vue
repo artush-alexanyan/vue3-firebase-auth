@@ -12,14 +12,14 @@
                 <h3 class="text-primary-green py-2.5 text-center">{{ group.name }}</h3>
                 <draggable
                   @change="(event) => handleTaskMove(group.key)(event)"
-                  class="dragArea list-group min-h-[120px]"
+                  class="dragArea list-group"
                   :list="group.tasks"
                   item-key="id"
                   :group="{ name: 'tasks' }"
                 >
                   <template #item="{ element }">
                     <div class="list-group-item cursor-drag">
-                      <TaskItem class="mb-1" :task="element" />
+                      <TaskItem :task="element" />
                     </div>
                   </template>
 
@@ -45,16 +45,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
+import { useCrudStore } from '@/stores/crud/crud'
+import { useTaskStore } from '@/stores/tasks/tasks'
 import BaseLoader from '@/components/base/BaseLoader.vue'
 import TaskItem from './TaskItem.vue'
-import { useCrudStore } from '@/stores/crud/crud'
 import Draggable from 'vuedraggable'
 
 const crudStore = useCrudStore()
+const taskStore = useTaskStore()
 
-const tasks = ref([])
-const taskFetching = ref(false)
+const tasks = computed(() => taskStore.tasks)
+const taskFetching = computed(() => taskStore.taskFetching)
 
 const handleTaskMove = (newStatus) => async (event) => {
   if (event.added?.element) {
@@ -66,34 +68,7 @@ const handleTaskMove = (newStatus) => async (event) => {
   }
 }
 
-const fetchAllTasks = async () => {
-  const statusGroups = [
-    { id: 1, name: 'Open', key: 'open', tasks: [] },
-    { id: 2, name: 'In Progress', key: 'in_progress', tasks: [] },
-    { id: 3, name: 'Review', key: 'review', tasks: [] },
-    { id: 4, name: 'Completed', key: 'completed', tasks: [] },
-  ]
-
-  try {
-    taskFetching.value = true
-    const taskData = await crudStore.getCollectionItems('tasks')
-
-    taskData.forEach((task) => {
-      const group = statusGroups.find((s) => s.key === task.status)
-      if (group) {
-        group.tasks.push(task)
-      }
-    })
-
-    tasks.value = statusGroups
-  } catch (error) {
-    console.error('error fetching tasks', error)
-  } finally {
-    taskFetching.value = false
-  }
-}
-
 onMounted(async () => {
-  await fetchAllTasks()
+  await taskStore.fetchAllTasks()
 })
 </script>
